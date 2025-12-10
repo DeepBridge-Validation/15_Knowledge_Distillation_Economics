@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# Script de compilacao para Paper 08 - Regulatory Compliance Automation
+# Script de compilacao para Paper 15 - Knowledge Distillation Economics
 # Compila o documento LaTeX em PDF usando pdflatex e bibtex
 
 set -e  # Para em caso de erro
 
 echo "========================================="
-echo "Compilando Paper 08: Regulatory Compliance"
+echo "Compilando Paper 15: Knowledge Distillation"
 echo "========================================="
 
 # Remove arquivos temporarios anteriores
