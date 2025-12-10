@@ -442,7 +442,7 @@ Should work out-of-the-box. Tested on Ubuntu 22.04.
 
 - **Main README**: [`../README.md`](../README.md)
 - **Experiment README**: [`../experiments/README.md`](../experiments/README.md)
-- **Paper**: [`../POR/main.pdf`](../POR/main.pdf)
+- **Paper**: [`../paper/portuguese/main.pdf`](../paper/portuguese/main.pdf)
 
 ### Getting Help
 

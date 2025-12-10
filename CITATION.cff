@@ -1,0 +1,68 @@
+cff-version: 1.2.0
+message: "If you use this software or reproduce results from our paper, please cite it as below."
+type: software
+title: "Knowledge Distillation for Economics: Trading Complexity for Interpretability"
+version: 1.0.0
+date-released: 2025-12-10
+authors:
+  - family-names: "Haase"
+    given-names: "Gustavo Coelho"
+    email: "gustavohaase@gmail.com"
+    affiliation: "Banco do Brasil S.A"
+    orcid: "https://orcid.org/0000-0000-0000-0000"
+  - family-names: "Silva"
+    given-names: "Paulo Henrique Dourado da"
+    email: "paulodourado.unb@gmail.com"
+    affiliation: "Banco do Brasil S.A"
+    orcid: "https://orcid.org/0000-0000-0000-0000"
+repository-code: "https://github.com/DeepBridge-Validation/15_Knowledge_Distillation_Economics"
+url: "https://deepbridge.readthedocs.io/"
+abstract: |
+  Economists and policy makers face a fundamental dilemma: complex machine learning models
+  (ensembles, neural networks) achieve high predictive accuracy but lack the economic
+  interpretability essential for policy analysis, while traditional econometric models
+  (linear regression, logit) are interpretable but limited in predictive power. We present
+  an econometric knowledge distillation framework that transfers knowledge from complex
+  models (teacher) to interpretable models (student GAM/Linear), simultaneously preserving:
+  (1) economic intuition (coefficients, marginal effects), (2) economic constraints
+  (monotonicity, sign consistency), and (3) coefficient stability (valid statistical
+  inference). Our implementation in DeepBridge allows distilling XGBoost/Neural Networks
+  to GAMs/Linear with only 2-5% accuracy loss, while producing stable coefficients under
+  bootstrap (CV < 0.15), preserving economic relationships, and enabling valid causal
+  analysis. Validation in three economic domains (credit risk, labor economics, health
+  economics) demonstrates that distilled model coefficients converge with economic theory,
+  marginal effects are monotonic and interpretable, and structural breaks (pre/post-2008)
+  are detected and economically interpreted. This framework bridges the critical gap
+  between high-performance ML and econometric rigor.
+keywords:
+  - knowledge distillation
+  - econometrics
+  - interpretability
+  - generalized additive models
+  - economic theory
+  - policy analysis
+  - causal inference
+  - model compression
+  - machine learning
+  - reproducibility
+license: MIT
+preferred-citation:
+  type: article
+  title: "Knowledge Distillation for Economics: Trading Complexity for Interpretability in Econometric Models"
+  authors:
+    - family-names: "Haase"
+      given-names: "Gustavo Coelho"
+      email: "gustavohaase@gmail.com"
+      affiliation: "Banco do Brasil S.A"
+    - family-names: "Silva"
+      given-names: "Paulo Henrique Dourado da"
+      email: "paulodourado.unb@gmail.com"
+      affiliation: "Banco do Brasil S.A"
+  year: 2026
+  # Update these fields after publication:
+  # journal: "[Journal Name]"
+  # volume: XX
+  # issue: XX
+  # start: XX
+  # end: XX
+  # doi: "10.XXXX/XXXXX"

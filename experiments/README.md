@@ -354,7 +354,7 @@ Para fortalecer ainda mais a validação empírica:
 ## 📧 Suporte
 
 Para questões sobre os experimentos:
-- Ver documentação do paper: `../POR/main.pdf`
+- Ver documentação do paper: `../paper/portuguese/main.pdf`
 - Exemplos conceituais: `/examples/notebooks/09_knowledge_Economics/`
 - Issues: GitHub do DeepBridge
 
