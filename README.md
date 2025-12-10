@@ -1,6 +1,6 @@
 # Knowledge Distillation for Economics
 
-[![Paper](https://img.shields.io/badge/Paper-PDF-red?style=flat-square)](POR/main.pdf)
+[![Paper](https://img.shields.io/badge/Paper-PDF-red?style=flat-square)](paper/main.pdf)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg?style=flat-square)](https://www.python.org/downloads/)
 
@@ -180,7 +180,7 @@ knowledge-distillation-economics/
 ├── CITATION.bib                       # How to cite this work
 ├── requirements.txt                   # Python dependencies
 │
-├── POR/                               # Paper LaTeX source (Portuguese)
+├── paper/                             # Paper LaTeX source
 │   ├── main.tex                      # Main paper file
 │   ├── main.pdf                      # Compiled PDF
 │   ├── sections/                     # Paper sections
@@ -286,7 +286,7 @@ Comprehensive documentation is available:
 
 - **[Experiment README](experiments/README.md)**: Detailed experiment descriptions
 - **[Reproducibility Guide](docs/REPRODUCIBILITY.md)**: Step-by-step reproduction instructions
-- **[Paper PDF](POR/main.pdf)**: Full paper with methodology and results
+- **[Paper PDF](paper/main.pdf)**: Full paper with methodology and results
 
 ### Key Concepts
 
@@ -350,7 +350,7 @@ Please open an issue first to discuss proposed changes.
 
 For questions or feedback:
 - **Issues**: [GitHub Issues](https://github.com/[username]/knowledge-distillation-economics/issues)
-- **Paper**: See [POR/main.pdf](POR/main.pdf) for methodology details
+- **Paper**: See [paper/main.pdf](paper/main.pdf) for methodology details
 
 ---
 
