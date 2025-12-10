@@ -145,8 +145,8 @@ None (initial release).
 For questions or issues:
 - Check [FAQ.md](docs/FAQ.md)
 - Review [REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md)
-- Search [existing issues](https://github.com/[username]/knowledge-distillation-economics/issues)
-- Open [new issue](https://github.com/[username]/knowledge-distillation-economics/issues/new)
+- Search [existing issues](https://github.com/DeepBridge-Validation/15_Knowledge_Distillation_Economics/issues)
+- Open [new issue](https://github.com/DeepBridge-Validation/15_Knowledge_Distillation_Economics/issues/new)
 
 ---
 
@@ -168,4 +168,4 @@ If you use this version in your research, please cite:
 ---
 
 **Maintained by**: Knowledge Distillation Economics Team
-**Repository**: https://github.com/[username]/knowledge-distillation-economics
+**Repository**: https://github.com/DeepBridge-Validation/15_Knowledge_Distillation_Economics

@@ -97,8 +97,8 @@ Our framework achieves remarkable performance across two real-world economic dom
 
 ```bash
 # Clone repository
-git clone https://github.com/[username]/knowledge-distillation-economics.git
-cd knowledge-distillation-economics
+git clone https://github.com/DeepBridge-Validation/15_Knowledge_Distillation_Economics.git
+cd 15_Knowledge_Distillation_Economics
 
 # Create virtual environment (recommended)
 python3 -m venv venv
@@ -349,7 +349,7 @@ Please open an issue first to discuss proposed changes.
 ## Contact
 
 For questions or feedback:
-- **Issues**: [GitHub Issues](https://github.com/[username]/knowledge-distillation-economics/issues)
+- **Issues**: [GitHub Issues](https://github.com/DeepBridge-Validation/15_Knowledge_Distillation_Economics/issues)
 - **Paper**: See [paper/main.pdf](paper/main.pdf) for methodology details
 
 ---

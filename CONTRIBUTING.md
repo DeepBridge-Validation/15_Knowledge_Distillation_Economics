@@ -55,9 +55,9 @@ This project adheres to a code of professional conduct. By participating, you ar
 
 ```bash
 # Fork the repository on GitHub, then:
-git clone https://github.com/YOUR_USERNAME/knowledge-distillation-economics.git
-cd knowledge-distillation-economics
-git remote add upstream https://github.com/ORIGINAL_OWNER/knowledge-distillation-economics.git
+git clone https://github.com/YOUR_USERNAME/15_Knowledge_Distillation_Economics.git
+cd 15_Knowledge_Distillation_Economics
+git remote add upstream https://github.com/DeepBridge-Validation/15_Knowledge_Distillation_Economics.git
 ```
 
 ### 2. Create Development Environment
@@ -461,8 +461,8 @@ To add a new experiment:
 ## Questions?
 
 - Check the [FAQ](docs/FAQ.md)
-- Search [existing issues](https://github.com/USERNAME/knowledge-distillation-economics/issues)
-- Open a [new issue](https://github.com/USERNAME/knowledge-distillation-economics/issues/new) with tag `question`
+- Search [existing issues](https://github.com/DeepBridge-Validation/15_Knowledge_Distillation_Economics/issues)
+- Open a [new issue](https://github.com/DeepBridge-Validation/15_Knowledge_Distillation_Economics/issues/new) with tag `question`
 
 ---
 

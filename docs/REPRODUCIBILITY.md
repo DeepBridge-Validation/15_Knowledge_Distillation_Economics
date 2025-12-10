@@ -51,8 +51,8 @@ For users familiar with Python and command line:
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/[username]/knowledge-distillation-economics.git
-cd knowledge-distillation-economics
+git clone https://github.com/DeepBridge-Validation/15_Knowledge_Distillation_Economics.git
+cd 15_Knowledge_Distillation_Economics
 
 # 2. Create virtual environment
 python3 -m venv venv
@@ -77,8 +77,8 @@ python scripts/check_dependencies.py
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/[username]/knowledge-distillation-economics.git
-cd knowledge-distillation-economics
+git clone https://github.com/DeepBridge-Validation/15_Knowledge_Distillation_Economics.git
+cd 15_Knowledge_Distillation_Economics
 ```
 
 Or download and extract the ZIP file from GitHub.

@@ -150,7 +150,7 @@ Os seguintes documentos foram criados durante o planejamento e devem ser mantido
 
 2. **Personalizar README.md**
    - Linha 28: Adicionar nomes dos autores
-   - Linhas com `[username]`: Substituir por username real do GitHub
+   - GitHub URLs: ✅ Já atualizados para DeepBridge-Validation
 
 3. **Testar reprodução completa** (recomendado mas opcional)
    ```bash
@@ -259,7 +259,7 @@ No material suplementar, inclua:
 ```
 Code availability:
 The complete source code, reproduction scripts, and documentation are
-available at: https://github.com/[username]/knowledge-distillation-economics
+available at: https://github.com/DeepBridge-Validation/15_Knowledge_Distillation_Economics
 
 All experiments can be reproduced in < 10 minutes by following the
 instructions in README.md. Detailed step-by-step guide available at

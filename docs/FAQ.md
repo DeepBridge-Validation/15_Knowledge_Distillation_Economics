@@ -470,8 +470,8 @@ See [LICENSE](../LICENSE) for full text.
 ## Still Have Questions?
 
 - **Check docs**: [Documentation directory](.)
-- **Search issues**: [GitHub Issues](https://github.com/[username]/knowledge-distillation-economics/issues)
-- **Ask a question**: [Open new issue](https://github.com/[username]/knowledge-distillation-economics/issues/new) with tag `question`
+- **Search issues**: [GitHub Issues](https://github.com/DeepBridge-Validation/15_Knowledge_Distillation_Economics/issues)
+- **Ask a question**: [Open new issue](https://github.com/DeepBridge-Validation/15_Knowledge_Distillation_Economics/issues/new) with tag `question`
 
 ---
 
