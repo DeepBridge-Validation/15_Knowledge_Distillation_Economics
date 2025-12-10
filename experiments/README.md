@@ -64,13 +64,26 @@ experiments/
 
 ### Requisitos
 
-```bash
-pip install scikit-learn pandas numpy scipy matplotlib seaborn
-```
+**Software**:
+- Python 3.9+
+- Dependencies: `pip install -r requirements.txt` (from project root)
 
-DeepBridge (para Knowledge Distillation padrão):
+**Hardware Mínimo**:
+- RAM: 4GB (8GB recomendado)
+- CPU: 2 cores
+- Disco: ~500MB para dados e resultados
+
+**Tempo Estimado**: 5-10 minutos total
+
+### Quick Start (Recomendado)
+
+Execute from project root:
 ```bash
-pip install -e /path/to/DeepBridge
+# Verify dependencies first
+python scripts/check_dependencies.py
+
+# Run all experiments
+./scripts/reproduce_all_results.sh
 ```
 
 ### Opção 1: Executar Todos os Experimentos
@@ -288,6 +301,40 @@ Para incluir no paper:
    - Logistic Regression é baseline válido
    - Implementação GAM: trabalho futuro
 
+## 🔧 Troubleshooting
+
+### Problema: "openml not found"
+**Solução**: Instale o openml:
+```bash
+pip install openml
+```
+
+### Problema: "Memory Error" durante experimentos
+**Solução**:
+- Reduza `n_bootstrap` nos experimentos (padrão: 500 → 100)
+- Use máquina com mais RAM (mínimo 8GB)
+
+### Problema: Resultados diferentes dos reportados no paper
+**Possíveis causas**:
+- Diferenças de versão em bibliotecas (variação esperada: ±2-3%)
+- Randomness em bootstrap (mesmo com seed fixo pode haver pequenas variações)
+- Versões diferentes do Python
+
+**Validação**: Resultados são considerados válidos se:
+- AUC ± 0.03 do valor reportado
+- Compliance ± 5% do valor reportado
+- CV ± 0.05 do valor reportado
+
+### Problema: Datasets não baixam automaticamente
+**Solução**:
+- Verifique conexão com internet
+- OpenML pode estar indisponível temporariamente
+- Experimentos usam fallback para dados sintéticos se OpenML falhar
+
+Para mais ajuda, consulte: [../docs/REPRODUCIBILITY.md](../docs/REPRODUCIBILITY.md)
+
+---
+
 ## 🚀 Próximos Passos
 
 Para fortalecer ainda mais a validação empírica:
@@ -315,6 +362,6 @@ Para questões sobre os experimentos:
 
 **Status**: ✅ Experimentos prontos para inclusão no paper
 
-**Última atualização**: 2025-12-09
+**Última atualização**: 2025-12-10
 
 **Aprovado para submissão**: Journal of Econometrics, NeurIPS Economics Track
