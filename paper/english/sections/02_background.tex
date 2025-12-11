@@ -21,7 +21,7 @@ Economics traditionally uses models with clear interpretation:
         \item Limitation: Rigid functional form
     \end{itemize}
 
-    \item \textbf{Generalized Additive Models (GAM)}: $g(E[y]) = \beta_0 + \sum_{i=1}^{p} f_i(x_i)$
+    \item \textbf{Generalized Additive Models (GAM)}~\cite{hastie1987generalized,wood2017generalized}: $g(E[y]) = \beta_0 + \sum_{i=1}^{p} f_i(x_i)$
     \begin{itemize}
         \item Flexibility for non-linearities via splines
         \item Individually interpretable $f_i$ functions
@@ -46,7 +46,7 @@ Violation of these constraints invalidates economic interpretation.
 
 \subsubsection{Classical Framework}
 
-Hinton et al. (2015) introduced knowledge distillation:
+Hinton et al.~\cite{hinton2015distilling} introduced knowledge distillation:
 
 \begin{equation}
 \mathcal{L}_{\text{KD}} = \alpha \mathcal{L}_{\text{soft}} + (1-\alpha) \mathcal{L}_{\text{hard}}
@@ -62,6 +62,8 @@ where:
 \textbf{Limitation}: Exclusive focus on predictive accuracy, ignoring interpretability.
 
 \subsubsection{Distillation Variants}
+
+Recent surveys~\cite{gou2021knowledge} classify distillation approaches into response-based, feature-based, and relation-based methods.
 
 \begin{table}[h]
 \centering
@@ -84,19 +86,19 @@ Relation-based & Relations between examples & Metric learning \\
 \subsubsection{Work in Economic Interpretability}
 
 \begin{itemize}
-    \item \textbf{Mullainathan \& Spiess (2017)}: ``Machine Learning: An Applied Econometric Approach''
+    \item \textbf{Mullainathan \& Spiess}~\cite{mullainathan2017machine}: ``Machine Learning: An Applied Econometric Approach''
     \begin{itemize}
         \item Discuss trade-off prediction vs. causal inference
         \item Do not propose reconciliation methodology
     \end{itemize}
 
-    \item \textbf{Athey \& Imbens (2019)}: ``Machine Learning Methods Economists Should Know About''
+    \item \textbf{Athey \& Imbens}~\cite{athey2019machine}: ``Machine Learning Methods Economists Should Know About''
     \begin{itemize}
         \item Review of ML methods for economics
         \item Focus on causal inference, not distillation
     \end{itemize}
 
-    \item \textbf{Lundberg et al. (2020)}: ``From Local Explanations to Global Understanding with Explainable AI''
+    \item \textbf{Lundberg et al.}~\cite{lundberg2020local}: ``From Local Explanations to Global Understanding with Explainable AI''
     \begin{itemize}
         \item SHAP values for interpretation
         \item Limitation: Post-hoc explanations, not intrinsically interpretable model
@@ -131,7 +133,7 @@ Policy analysis requires stable coefficients:
 CV(\beta_i) = \frac{\sigma(\hat{\beta}_i^{(1)}, \ldots, \hat{\beta}_i^{(B)})}{\mu(\hat{\beta}_i^{(1)}, \ldots, \hat{\beta}_i^{(B)})}
 \end{equation}
 
-where $\hat{\beta}_i^{(b)}$ is the estimate of $\beta_i$ in bootstrap sample $b$.
+where $\hat{\beta}_i^{(b)}$ is the estimate of $\beta_i$ in bootstrap sample $b$~\cite{efron1979bootstrap}.
 
 \textbf{Criterion}: $CV < 0.15$ indicates acceptable stability for policy analysis.
 
@@ -150,7 +152,7 @@ Structural breaks occur when fundamental economic relationships change:
 \subsubsection{Traditional Tests}
 
 \begin{itemize}
-    \item \textbf{Chow Test}: Tests equality of coefficients between periods
+    \item \textbf{Chow Test}~\cite{chow1960tests}: Tests equality of coefficients between periods
     \item \textbf{CUSUM}: Detects changes in cumulative residuals
     \item \textbf{Limitation}: Require a priori specification of break point
 \end{itemize}

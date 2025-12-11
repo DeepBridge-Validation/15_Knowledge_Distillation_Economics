@@ -65,27 +65,9 @@ Economist specifies constraints via declarative API:
 
 \begin{lstlisting}[language=Python, caption=Example of Constraint Specification]
 constraints = EconomicConstraints()
-
-# Sign constraint: income -> default (negative)
-constraints.add_sign(
-    feature='income',
-    sign=-1,
-    justification="Higher income -> Lower default risk"
-)
-
-# Monotonicity: age -> default (increasing up to 65)
-constraints.add_monotonicity(
-    feature='age',
-    direction='increasing',
-    bounds=(18, 65)
-)
-
-# Magnitude bound: interest_rate effect
-constraints.add_magnitude(
-    feature='interest_rate',
-    lower=0.5,
-    upper=2.0
-)
+constraints.add_sign('income', sign=-1)
+constraints.add_monotonicity('age', direction='increasing')
+constraints.add_magnitude('interest_rate', lower=0.5, upper=2.0)
 \end{lstlisting}
 
 \subsection{Component 3: Constrained Distillation Engine}
@@ -244,37 +226,19 @@ Framework identifies:
 Framework is integrated into DeepBridge via:
 
 \begin{lstlisting}[language=Python, caption=Integration API]
-from deepbridge.distillation import AutoDistiller
-from deepbridge.distillation.economics import (
-    EconomicConstraints,
-    StabilityAnalyzer,
-    StructuralBreakDetector
-)
+from deepbridge.distillation.economics import *
 
-# 1. Train teacher
-teacher = xgboost.XGBClassifier()
-teacher.fit(X_train, y_train)
-
-# 2. Define constraints
+# Train teacher and define constraints
+teacher = xgboost.XGBClassifier().fit(X_train, y_train)
 constraints = EconomicConstraints()
-constraints.add_sign('income', sign=-1)
-constraints.add_monotonicity('age', direction='increasing')
+constraints.add_sign('income', -1)
 
-# 3. Distill with constraints
+# Distill with constraints
 distiller = AutoDistiller.from_teacher(
-    teacher=teacher,
-    student_type=ModelType.GAM_CLASSIFIER,
-    constraints=constraints,
-    temperature=2.0,
-    alpha=0.5
-)
+    teacher, ModelType.GAM_CLASSIFIER, constraints)
 student = distiller.fit(X_train, y_train)
 
-# 4. Analyze stability
-stability = StabilityAnalyzer(n_bootstrap=1000)
-results = stability.analyze(student, X_train, y_train)
-
-# 5. Detect structural breaks
-break_detector = StructuralBreakDetector(window_size=500)
-breaks = break_detector.detect(X_train, y_train, time_var='date')
+# Analyze stability and detect breaks
+stability = StabilityAnalyzer().analyze(student, X, y)
+breaks = StructuralBreakDetector().detect(X, y)
 \end{lstlisting}
