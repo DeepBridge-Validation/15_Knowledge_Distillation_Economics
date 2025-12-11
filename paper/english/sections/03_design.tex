@@ -1,0 +1,280 @@
+\section{Framework Design}
+
+\subsection{Overview}
+
+The econometric distillation framework consists of five main components:
+
+\begin{enumerate}
+    \item \textbf{Teacher Training}: Training of high-accuracy complex model (XGBoost, Neural Network)
+    \item \textbf{Economic Constraint Encoder}: Encoding of economic constraints (monotonicity, signs)
+    \item \textbf{Constrained Distillation Engine}: Distillation to GAM/Linear preserving constraints
+    \item \textbf{Coefficient Stability Analyzer}: Validation of stability via bootstrap
+    \item \textbf{Structural Break Detector}: Identification of changes in economic relationships
+\end{enumerate}
+
+\subsection{Component 1: Teacher Training}
+
+\subsubsection{Supported Teacher Models}
+
+Framework accepts pre-trained complex models:
+
+\begin{itemize}
+    \item \textbf{Gradient Boosting}: XGBoost, LightGBM, CatBoost
+    \item \textbf{Random Forests}: Decision tree ensembles
+    \item \textbf{Neural Networks}: Fully connected architectures
+    \item \textbf{Ensemble Hybrids}: Combinations of multiple models
+\end{itemize}
+
+\textbf{Requirement}: Teacher model must provide calibrated probabilities.
+
+\subsubsection{Justification for Complexity}
+
+Teacher models capture:
+\begin{itemize}
+    \item High-order interactions between features
+    \item Complex non-linearities
+    \item Subtle patterns in high-dimensional data
+\end{itemize}
+
+\subsection{Component 2: Economic Constraint Encoder}
+
+\subsubsection{Types of Constraints}
+
+\begin{enumerate}
+    \item \textbf{Sign Constraints}: Coefficients/marginal effects must have specific sign
+    \begin{equation}
+    \text{sign}(\frac{\partial \hat{y}}{\partial x_i}) = s_i \quad \text{where } s_i \in \{-1, +1\}
+    \end{equation}
+
+    \item \textbf{Monotonicity Constraints}: GAM functions monotonically increasing/decreasing
+    \begin{equation}
+    f_i'(x) \geq 0 \quad \forall x \in \text{domain}(x_i) \quad \text{(increasing monotonicity)}
+    \end{equation}
+
+    \item \textbf{Magnitude Bounds}: Upper/lower bounds for effects
+    \begin{equation}
+    L_i \leq \beta_i \leq U_i
+    \end{equation}
+
+    \item \textbf{Interaction Constraints}: Constraints on specific interaction terms
+\end{enumerate}
+
+\subsubsection{Constraint Specification}
+
+Economist specifies constraints via declarative API:
+
+\begin{lstlisting}[language=Python, caption=Example of Constraint Specification]
+constraints = EconomicConstraints()
+
+# Sign constraint: income -> default (negative)
+constraints.add_sign(
+    feature='income',
+    sign=-1,
+    justification="Higher income -> Lower default risk"
+)
+
+# Monotonicity: age -> default (increasing up to 65)
+constraints.add_monotonicity(
+    feature='age',
+    direction='increasing',
+    bounds=(18, 65)
+)
+
+# Magnitude bound: interest_rate effect
+constraints.add_magnitude(
+    feature='interest_rate',
+    lower=0.5,
+    upper=2.0
+)
+\end{lstlisting}
+
+\subsection{Component 3: Constrained Distillation Engine}
+
+\subsubsection{Modified Loss Function}
+
+Econometric distillation minimizes:
+
+\begin{equation}
+\mathcal{L}_{\text{econ}} = \alpha \mathcal{L}_{\text{KD}} + \beta \mathcal{L}_{\text{constraint}} + \gamma \mathcal{L}_{\text{hard}}
+\end{equation}
+
+where:
+
+\begin{align}
+\mathcal{L}_{\text{KD}} &= \text{KL}(p_{\text{teacher}}^T \| p_{\text{student}}^T) \\
+\mathcal{L}_{\text{constraint}} &= \sum_{i} \lambda_i \cdot \text{violation}_i \\
+\mathcal{L}_{\text{hard}} &= \text{CrossEntropy}(y_{\text{true}}, p_{\text{student}})
+\end{align}
+
+\subsubsection{Violation Penalization}
+
+For sign constraints:
+\begin{equation}
+\text{violation}_{\text{sign}}(i) = \max(0, -s_i \cdot \frac{\partial \hat{y}}{\partial x_i})
+\end{equation}
+
+For monotonicity:
+\begin{equation}
+\text{violation}_{\text{mono}}(i) = \sum_{x^{(j)} < x^{(k)}} \max(0, f_i(x^{(j)}) - f_i(x^{(k)}))
+\end{equation}
+
+\subsubsection{Student Model: GAM vs. Linear}
+
+\textbf{GAM (Preferred for greater flexibility)}:
+\begin{equation}
+\text{logit}(p) = \beta_0 + \sum_{i=1}^{p} f_i(x_i)
+\end{equation}
+
+Functions $f_i$ are B-splines with smoothness penalization:
+\begin{equation}
+\text{Penalty} = \lambda \sum_{i} \int [f_i''(x)]^2 dx
+\end{equation}
+
+\textbf{Linear (For maximum interpretability)}:
+\begin{equation}
+\text{logit}(p) = \beta_0 + \sum_{i=1}^{p} \beta_i x_i
+\end{equation}
+
+\subsubsection{Distillation Algorithm}
+
+\begin{algorithm}
+\caption{Constrained Economic Distillation}
+\begin{algorithmic}[1]
+\State \textbf{Input}: Teacher model $M_T$, Dataset $D$, Constraints $C$, Student type $S$
+\State \textbf{Output}: Distilled student model $M_S$
+\State
+\State $p_{\text{teacher}} \gets M_T.predict\_proba(D_X)$
+\State Initialize student model $M_S$ (GAM or Linear)
+\State
+\For{epoch $= 1$ to $N_{\text{epochs}}$}
+    \State Sample minibatch $(X_b, y_b)$ from $D$
+    \State $p_{\text{student}} \gets M_S.predict\_proba(X_b)$
+    \State
+    \State // Compute loss components
+    \State $\mathcal{L}_{\text{KD}} \gets$ KL divergence between teacher and student
+    \State $\mathcal{L}_{\text{hard}} \gets$ Cross-entropy with true labels
+    \State
+    \State // Evaluate constraint violations
+    \State $\mathcal{L}_{\text{constraint}} \gets 0$
+    \For{each constraint $c$ in $C$}
+        \State $v \gets$ EvaluateViolation$(M_S, c, X_b)$
+        \State $\mathcal{L}_{\text{constraint}} \gets \mathcal{L}_{\text{constraint}} + \lambda_c \cdot v$
+    \EndFor
+    \State
+    \State // Combined loss
+    \State $\mathcal{L} \gets \alpha \mathcal{L}_{\text{KD}} + \beta \mathcal{L}_{\text{constraint}} + \gamma \mathcal{L}_{\text{hard}}$
+    \State
+    \State Update $M_S$ parameters via gradient descent
+\EndFor
+\State
+\State \Return $M_S$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Component 4: Coefficient Stability Analyzer}
+
+\subsubsection{Bootstrap Analysis}
+
+To validate coefficient stability:
+
+\begin{enumerate}
+    \item Generate $B$ bootstrap samples (typically $B=1000$)
+    \item Distill student model on each sample
+    \item Calculate coefficients $\hat{\beta}_i^{(b)}$ for $b=1,\ldots,B$
+    \item Compute stability statistics:
+\end{enumerate}
+
+\begin{equation}
+CV(\beta_i) = \frac{\text{std}(\hat{\beta}_i^{(1)}, \ldots, \hat{\beta}_i^{(B)})}{\text{mean}(|\hat{\beta}_i^{(1)}|, \ldots, |\hat{\beta}_i^{(B)}|)}
+\end{equation}
+
+\subsubsection{Bootstrap Confidence Interval}
+
+95\% confidence interval:
+\begin{equation}
+CI_{95\%}(\beta_i) = [\hat{\beta}_i^{(2.5\%)}, \hat{\beta}_i^{(97.5\%)}]
+\end{equation}
+
+where percentiles are calculated over the bootstrap distribution.
+
+\subsubsection{Acceptance Criteria}
+
+Coefficient $\beta_i$ is considered stable if:
+\begin{itemize}
+    \item $CV(\beta_i) < 0.15$ (low relative variation)
+    \item $\text{sign}(\beta_i)$ constant in $\geq 95\%$ of bootstrap samples
+    \item Confidence interval does not cross zero (if effect theoretically non-null)
+\end{itemize}
+
+\subsection{Component 5: Structural Break Detector}
+
+\subsubsection{Rolling Window Analysis}
+
+To detect structural breaks:
+
+\begin{enumerate}
+    \item Divide data into temporal windows $W_1, W_2, \ldots, W_T$
+    \item Distill model in each window: $M_S^{(t)}$
+    \item Extract coefficients: $\beta^{(t)} = [\beta_1^{(t)}, \ldots, \beta_p^{(t)}]$
+    \item Test significant changes between consecutive windows
+\end{enumerate}
+
+\subsubsection{Structural Break Test}
+
+Modified Wald test:
+\begin{equation}
+W_t = (\beta^{(t+1)} - \beta^{(t)})^T \Sigma^{-1} (\beta^{(t+1)} - \beta^{(t)})
+\end{equation}
+
+where $\Sigma$ is the covariance matrix estimated via bootstrap.
+
+\textbf{Decision}: If $W_t > \chi^2_{p, 0.05}$, declare structural break at $t$.
+
+\subsubsection{Economic Interpretation of Breaks}
+
+Framework identifies:
+\begin{itemize}
+    \item \textbf{Which coefficient changed}: Feature(s) with largest relative variation
+    \item \textbf{Magnitude of change}: $\Delta \beta_i = \beta_i^{(t+1)} - \beta_i^{(t)}$
+    \item \textbf{Theoretical conformity}: Whether new relationship still respects constraints
+\end{itemize}
+
+\subsection{Integration with DeepBridge}
+
+Framework is integrated into DeepBridge via:
+
+\begin{lstlisting}[language=Python, caption=Integration API]
+from deepbridge.distillation import AutoDistiller
+from deepbridge.distillation.economics import (
+    EconomicConstraints,
+    StabilityAnalyzer,
+    StructuralBreakDetector
+)
+
+# 1. Train teacher
+teacher = xgboost.XGBClassifier()
+teacher.fit(X_train, y_train)
+
+# 2. Define constraints
+constraints = EconomicConstraints()
+constraints.add_sign('income', sign=-1)
+constraints.add_monotonicity('age', direction='increasing')
+
+# 3. Distill with constraints
+distiller = AutoDistiller.from_teacher(
+    teacher=teacher,
+    student_type=ModelType.GAM_CLASSIFIER,
+    constraints=constraints,
+    temperature=2.0,
+    alpha=0.5
+)
+student = distiller.fit(X_train, y_train)
+
+# 4. Analyze stability
+stability = StabilityAnalyzer(n_bootstrap=1000)
+results = stability.analyze(student, X_train, y_train)
+
+# 5. Detect structural breaks
+break_detector = StructuralBreakDetector(window_size=500)
+breaks = break_detector.detect(X_train, y_train, time_var='date')
+\end{lstlisting}

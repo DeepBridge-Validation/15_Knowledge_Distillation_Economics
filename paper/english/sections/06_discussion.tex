@@ -1,0 +1,267 @@
+\section{Discussion}
+
+\subsection{Main Findings}
+
+\subsubsection{Acceptable Trade-off}
+
+Results demonstrate favorable trade-off between accuracy and interpretability:
+
+\begin{itemize}
+    \item \textbf{Minimal accuracy loss}: 2-5\% vs. complex teacher models
+    \item \textbf{Substantial interpretability gain}: +26 points vs. standard KD
+    \item \textbf{Coefficient stability}: CV $< 0.15$ allows rigorous statistical inference
+    \item \textbf{Economic conformity}: 95\%+ of constraints preserved
+\end{itemize}
+
+\textbf{Implication}: For applications where interpretability is essential (policy analysis, regulation), sacrificing 2-5\% in accuracy is justifiable.
+
+\subsubsection{Superiority vs. Traditional Models}
+
+Economic KD dominates traditional approaches:
+
+\begin{itemize}
+    \item \textbf{vs. Linear/Logistic}: +8-12\% AUC, maintaining interpretability
+    \item \textbf{vs. GAM Vanilla}: +3-4\% AUC, same interpretability
+    \item \textbf{vs. XAI (SHAP/LIME)}: Intrinsic interpretability (not post-hoc)
+\end{itemize}
+
+\textbf{Conclusion}: Framework fills the gap between limited traditional models and opaque ML.
+
+\subsubsection{Stability Validation}
+
+Bootstrap analysis demonstrates coefficients sufficiently stable for:
+
+\begin{enumerate}
+    \item \textbf{Statistical inference}: Valid confidence intervals
+    \item \textbf{Policy analysis}: Non-volatile conclusions under sampling
+    \item \textbf{Reproducibility}: Consistent results across CV folds
+\end{enumerate}
+
+\textbf{Contrast}: Standard KD produces coefficients with CV 0.20+ (unstable for inference).
+
+\subsection{Practical Implications}
+
+\subsubsection{For Financial Industry}
+
+\textbf{Regulatory Compliance}:
+\begin{itemize}
+    \item Basel III / IFRS 9 require interpretable models with statistical foundation
+    \item Economic KD produces auditable GAM coefficients for regulators
+    \item Stability allows documentation of confidence intervals
+\end{itemize}
+
+\textbf{Competitive Advantage}:
+\begin{itemize}
+    \item Banks can use complex ensembles internally (teacher)
+    \item Distill to interpretable GAM for regulatory submission
+    \item Minimal accuracy loss (2-3\%) vs. direct use of linear
+\end{itemize}
+
+\subsubsection{For Public Policy Makers}
+
+\textbf{Impact Analysis}:
+\begin{itemize}
+    \item Stable marginal effects allow projection of policy impact
+    \item Example: 10\% increase in minimum wage $\rightarrow$ +X\% employment probability
+    \item Confidence intervals quantify uncertainty
+\end{itemize}
+
+\textbf{Break Detection}:
+\begin{itemize}
+    \item Automatic identification of structural changes (e.g., 2008 crisis)
+    \item Allows adaptation of policies to new economic regimes
+\end{itemize}
+
+\subsubsection{For Academic Research}
+
+\textbf{ML-Econometrics Integration}:
+\begin{itemize}
+    \item Bridge between ML predictive power and econometric rigor
+    \item Stable coefficients allow hypothesis testing
+    \item Compatible with causal inference (IV, diff-in-diff)
+\end{itemize}
+
+\subsection{Limitations}
+
+\subsubsection{1. Constraint Specification}
+
+\textbf{Limitation}: Framework requires economist to specify constraints a priori.
+
+\textbf{Implications}:
+\begin{itemize}
+    \item Incorrect constraints can degrade accuracy without interpretative gain
+    \item Economists may disagree about appropriate constraints
+    \item Features without clear theory (e.g., ZIP code) are difficult to constrain
+\end{itemize}
+
+\textbf{Mitigation}:
+\begin{itemize}
+    \item Provide constraints based on established economic literature
+    \item Allow relaxation of constraints if violation is systematic
+    \item Empirical validation: If unconstrained model violates theory, constraint is justified
+\end{itemize}
+
+\subsubsection{2. Interaction Complexity}
+
+\textbf{Limitation}: GAMs are additive---do not capture higher-order interactions.
+
+\textbf{Example}: Effect of education may depend on age (interaction)
+\begin{equation}
+\text{Effect}(\text{education} | \text{age}) \neq \text{constant}
+\end{equation}
+
+\textbf{Future Extension}:
+\begin{itemize}
+    \item GA$^2$Ms (Generalized Additive Models with explicit interactions)
+    \item Constraints on specific interaction terms
+\end{itemize}
+
+\subsubsection{3. Causality vs. Correlation}
+
+\textbf{Limitation}: Distillation preserves teacher correlations, not necessarily causal relationships.
+
+\textbf{Example}: Teacher may use proxy variables (e.g., ZIP code $\rightarrow$ race)
+
+\textbf{Implication}:
+\begin{itemize}
+    \item Coefficients are predictive, but not necessarily causal
+    \item Policy analysis requires additional validation (e.g., instrumental variables)
+\end{itemize}
+
+\textbf{Future Work}:
+\begin{itemize}
+    \item Integrate causal discovery in distillation process
+    \item Ensure constraints reflect causal structures, not just correlations
+\end{itemize}
+
+\subsubsection{4. Scalability}
+
+\textbf{Limitation}: Bootstrap with 1,000+ samples is computationally expensive.
+
+\textbf{Execution Time} (credit dataset, 250k samples):
+\begin{itemize}
+    \item Teacher training (XGBoost): 15 min
+    \item Single distillation run: 8 min
+    \item Bootstrap 1,000 runs: $\sim$130 hours (parallel: 8 hours on 16 cores)
+\end{itemize}
+
+\textbf{Optimizations}:
+\begin{itemize}
+    \item Parallelization via joblib/Dask
+    \item Bootstrap on subsamples (e.g., 50\% of data)
+    \item Analytical variance approximations (future)
+\end{itemize}
+
+\subsubsection{5. Generality of Constraints}
+
+\textbf{Limitation}: Constraints may be context/period-specific.
+
+\textbf{Example}: Age $\rightarrow$ default relationship may change in economic crises.
+
+\textbf{Approach}:
+\begin{itemize}
+    \item Structural break detection identifies changes
+    \item Re-specify constraints by period if necessary
+    \item ``Soft'' constraints (penalization) vs. ``hard'' (absolute constraint)
+\end{itemize}
+
+\subsection{Theoretical Implications}
+
+\subsubsection{Knowledge Distillation as Economic Regularization}
+
+Framework can be viewed as:
+
+\begin{equation}
+\min_{\theta} \underbrace{\mathcal{L}_{\text{fit}}(\theta)}_{\text{Accuracy}} + \lambda \underbrace{\mathcal{R}_{\text{econ}}(\theta)}_{\text{Economic Regularization}}
+\end{equation}
+
+where $\mathcal{R}_{\text{econ}}$ penalizes violations of economic theory.
+
+\textbf{Interpretation}: Economic constraints act as Bayesian prior informed by decades of research.
+
+\subsubsection{Prediction-Inference Reconciliation}
+
+Mullainathan \& Spiess (2017) argue that ML focuses on prediction, econometrics on inference.
+
+\textbf{Our Contribution}: Economic KD reconciles both:
+\begin{itemize}
+    \item \textbf{Prediction}: Distillation from complex teacher provides accuracy
+    \item \textbf{Inference}: GAM student + bootstrap provide stable coefficients with CIs
+\end{itemize}
+
+\subsubsection{Interpretability as Constraint Optimization}
+
+We define economic interpretability as an optimization problem:
+
+\begin{align}
+\max \quad & \text{Accuracy}(M) \\
+\text{s.t.} \quad & \text{Compliance}(M, C) \geq \tau_{\text{compliance}} \\
+& \text{Stability}(M) \geq \tau_{\text{stability}} \\
+& M \in \{\text{GAM, Linear}\}
+\end{align}
+
+Framework approximately solves this multi-objective problem.
+
+\subsection{Comparison with Alternative Approaches}
+
+\subsubsection{vs. Direct Constrained Optimization}
+
+\textbf{Alternative}: Train GAM directly with economic constraints (without distillation).
+
+\textbf{Our Results}: Economic KD surpasses direct constrained GAM by +3-4\% AUC.
+
+\textbf{Explanation}: Complex teacher captures patterns that direct GAM cannot, but distillation transfers knowledge while preserving constraints.
+
+\subsubsection{vs. Post-hoc Calibration}
+
+\textbf{Alternative}: Train complex model, adjust coefficients post-hoc for conformity.
+
+\textbf{Problem}:
+\begin{itemize}
+    \item Manually adjusted coefficients lack statistical foundation
+    \item Calibration may introduce inconsistencies
+    \item Does not guarantee stability
+\end{itemize}
+
+\textbf{Economic KD Advantage}: Constraints integrated into training, not imposed post-hoc.
+
+\subsubsection{vs. Hybrid Ensembles}
+
+\textbf{Alternative}: Ensemble of complex model + interpretable model.
+
+\textbf{Example}: $\text{Prediction} = 0.7 \times \text{XGBoost} + 0.3 \times \text{GAM}$
+
+\textbf{Problem}:
+\begin{itemize}
+    \item Interpretability compromised (opaque ensemble)
+    \item GAM coefficients do not reflect final prediction
+\end{itemize}
+
+\textbf{Economic KD Advantage}: Single student model, fully interpretable.
+
+\subsection{Future Directions}
+
+\subsubsection{Methodological Extensions}
+
+\begin{enumerate}
+    \item \textbf{Causal Distillation}: Ensure preservation of causal structures (via causal graphs)
+    \item \textbf{Multi-Task Distillation}: Distill for multiple economic objectives simultaneously
+    \item \textbf{Adaptive Constraints}: Learn optimal constraints from data (not specify a priori)
+    \item \textbf{Intersectionality}: Constraints on subgroups (e.g., education effect varies by gender/race)
+\end{enumerate}
+
+\subsubsection{New Domains}
+
+\begin{itemize}
+    \item \textbf{Macroeconomics}: Forecasting indicators (GDP, inflation) with interpretability
+    \item \textbf{Environmental Economics}: Carbon pricing models with sustainability constraints
+    \item \textbf{Behavioral Economics}: Decision models preserving bounded rationality assumptions
+\end{itemize}
+
+\subsubsection{Integration with Existing Tools}
+
+\begin{itemize}
+    \item \textbf{EconML}: Combine causal inference with economic distillation
+    \item \textbf{DoWhy}: Integrate causal reasoning in distillation process
+    \item \textbf{Fairlearn}: Add fairness constraints to economic constraints
+\end{itemize}

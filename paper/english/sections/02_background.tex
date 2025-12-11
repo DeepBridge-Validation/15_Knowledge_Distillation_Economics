@@ -1,0 +1,188 @@
+\section{Background and Related Work}
+
+\subsection{Econometrics and Interpretability}
+
+\subsubsection{Classical Econometric Models}
+
+Economics traditionally uses models with clear interpretation:
+
+\begin{itemize}
+    \item \textbf{Linear Regression}: $y = \beta_0 + \sum_{i=1}^{p} \beta_i x_i + \epsilon$
+    \begin{itemize}
+        \item Coefficients $\beta_i$ represent marginal effects
+        \item Inference via confidence intervals, t-tests
+        \item Limitation: Only linear relationships
+    \end{itemize}
+
+    \item \textbf{Logit/Probit}: For binary dependent variables
+    \begin{itemize}
+        \item Interpretable log-odds ratios
+        \item Calculable marginal effects
+        \item Limitation: Rigid functional form
+    \end{itemize}
+
+    \item \textbf{Generalized Additive Models (GAM)}: $g(E[y]) = \beta_0 + \sum_{i=1}^{p} f_i(x_i)$
+    \begin{itemize}
+        \item Flexibility for non-linearities via splines
+        \item Individually interpretable $f_i$ functions
+        \item Preserves additivity (interpretation of partial effects)
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Economic Constraints}
+
+Economic theory imposes constraints that models must respect:
+
+\begin{enumerate}
+    \item \textbf{Monotonicity}: Utility functions are non-decreasing in consumption
+    \item \textbf{Law of Demand}: Price $\uparrow$ $\rightarrow$ Quantity demanded $\downarrow$
+    \item \textbf{Sign Constraints}: Income $\uparrow$ $\rightarrow$ Default probability $\downarrow$
+    \item \textbf{Homogeneity}: Production functions exhibit specific returns to scale
+\end{enumerate}
+
+Violation of these constraints invalidates economic interpretation.
+
+\subsection{Knowledge Distillation}
+
+\subsubsection{Classical Framework}
+
+Hinton et al. (2015) introduced knowledge distillation:
+
+\begin{equation}
+\mathcal{L}_{\text{KD}} = \alpha \mathcal{L}_{\text{soft}} + (1-\alpha) \mathcal{L}_{\text{hard}}
+\end{equation}
+
+where:
+\begin{itemize}
+    \item $\mathcal{L}_{\text{soft}}$: KL divergence between teacher probabilities (temperature $T$) and student
+    \item $\mathcal{L}_{\text{hard}}$: Cross-entropy with true labels
+    \item $\alpha$: Weight balancing soft vs. hard labels
+\end{itemize}
+
+\textbf{Limitation}: Exclusive focus on predictive accuracy, ignoring interpretability.
+
+\subsubsection{Distillation Variants}
+
+\begin{table}[h]
+\centering
+\caption{Knowledge Distillation Approaches}
+\small
+\begin{tabularx}{\columnwidth}{lXl}
+\toprule
+\textbf{Approach} & \textbf{Characteristic} & \textbf{Application} \\
+\midrule
+Response-based & Soft labels at outputs & Classification \\
+Feature-based & Intermediate layers & Vision, NLP \\
+Relation-based & Relations between examples & Metric learning \\
+\textbf{Ours: Econometric} & \textbf{Economic constraints} & \textbf{Economics} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Interpretable ML in Economics}
+
+\subsubsection{Work in Economic Interpretability}
+
+\begin{itemize}
+    \item \textbf{Mullainathan \& Spiess (2017)}: ``Machine Learning: An Applied Econometric Approach''
+    \begin{itemize}
+        \item Discuss trade-off prediction vs. causal inference
+        \item Do not propose reconciliation methodology
+    \end{itemize}
+
+    \item \textbf{Athey \& Imbens (2019)}: ``Machine Learning Methods Economists Should Know About''
+    \begin{itemize}
+        \item Review of ML methods for economics
+        \item Focus on causal inference, not distillation
+    \end{itemize}
+
+    \item \textbf{Lundberg et al. (2020)}: ``From Local Explanations to Global Understanding with Explainable AI''
+    \begin{itemize}
+        \item SHAP values for interpretation
+        \item Limitation: Post-hoc explanations, not intrinsically interpretable model
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Gap in the Literature}
+
+\textbf{No previous work} combines:
+\begin{enumerate}
+    \item Knowledge distillation of complex models
+    \item Preservation of economic constraints
+    \item Guarantee of coefficient stability
+    \item Validation in real economic domains
+\end{enumerate}
+
+\subsection{Coefficient Stability}
+
+\subsubsection{Importance in Econometrics}
+
+Policy analysis requires stable coefficients:
+
+\begin{itemize}
+    \item \textbf{Statistical inference}: Valid confidence intervals require non-volatile estimates
+    \item \textbf{Reproducibility}: Results must be replicable in independent samples
+    \item \textbf{Robustness}: Conclusions cannot depend on sample particularities
+\end{itemize}
+
+\subsubsection{Stability Metrics}
+
+\begin{equation}
+CV(\beta_i) = \frac{\sigma(\hat{\beta}_i^{(1)}, \ldots, \hat{\beta}_i^{(B)})}{\mu(\hat{\beta}_i^{(1)}, \ldots, \hat{\beta}_i^{(B)})}
+\end{equation}
+
+where $\hat{\beta}_i^{(b)}$ is the estimate of $\beta_i$ in bootstrap sample $b$.
+
+\textbf{Criterion}: $CV < 0.15$ indicates acceptable stability for policy analysis.
+
+\subsection{Structural Breaks}
+
+\subsubsection{Economic Concept}
+
+Structural breaks occur when fundamental economic relationships change:
+
+\begin{itemize}
+    \item \textbf{2008 Financial Crisis}: Income-default probability relationship changed drastically
+    \item \textbf{Regulatory Changes}: New laws alter economic agent behavior
+    \item \textbf{Technological Shocks}: Automation alters production functions
+\end{itemize}
+
+\subsubsection{Traditional Tests}
+
+\begin{itemize}
+    \item \textbf{Chow Test}: Tests equality of coefficients between periods
+    \item \textbf{CUSUM}: Detects changes in cumulative residuals
+    \item \textbf{Limitation}: Require a priori specification of break point
+\end{itemize}
+
+\textbf{Our Approach}: Automatic detection via analysis of distilled coefficients in temporal windows.
+
+\subsection{Related Work in Interpretable ML}
+
+\begin{table}[h]
+\centering
+\caption{Comparison with Interpretability Tools}
+\small
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Tool} & \textbf{Intr.} & \textbf{Econ.} & \textbf{Stab.} & \textbf{Dist.} \\
+\midrule
+LIME & \xmark & \xmark & \xmark & \xmark \\
+SHAP & \xmark & \xmark & \xmark & \xmark \\
+InterpretML & \cmark & \xmark & \xmark & \xmark \\
+EconML & \cmark & Part. & \cmark & \xmark \\
+\textbf{Ours} & \cmark & \cmark & \cmark & \cmark \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Positioning of the Contribution}
+
+Our approach fills a fundamental gap:
+
+\begin{itemize}
+    \item vs. \textbf{Classical KD}: Adds economic constraints and stability validation
+    \item vs. \textbf{Traditional econometrics}: Achieves superior accuracy via distillation of complex models
+    \item vs. \textbf{Explainable AI}: Produces intrinsically interpretable models, not post-hoc explanations
+    \item vs. \textbf{EconML}: Focuses on distillation for interpretability, not just causal inference
+\end{itemize}

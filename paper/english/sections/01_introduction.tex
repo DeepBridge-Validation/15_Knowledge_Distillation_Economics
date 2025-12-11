@@ -1,0 +1,90 @@
+\section{Introduction}
+
+The application of machine learning in economics faces a fundamental tension between predictive power and economic interpretability. Complex models (gradient boosting, neural networks) achieve superior accuracy but produce ``black boxes'' inadequate for public policy analysis, causal inference, and theoretical validation. Traditional econometric models (linear regression, logit, GAM) offer interpretable coefficients and statistical foundation, but have limitations in their capacity to capture complex non-linear relationships.
+
+\subsection{Motivation}
+
+Economists and policy makers require models that simultaneously:
+
+\begin{itemize}
+    \item \textbf{Economic interpretation}: Coefficients represent marginal effects, elasticities, or interpretable causal relationships
+    \item \textbf{Theoretical conformity}: Models respect economic constraints (monotonicity of utility functions, law of demand)
+    \item \textbf{Auditability}: Non-ML specialists (regulators, policy makers) can validate assumptions and results
+    \item \textbf{Statistical inference}: Confidence intervals, hypothesis tests, and coefficient stability allow rigorous conclusions
+    \item \textbf{High accuracy}: High-impact economic decisions (monetary policy, financial regulation) require precise predictions
+\end{itemize}
+
+Critical applications include:
+\begin{enumerate}
+    \item \textbf{Credit risk}: Regulators require interpretable coefficients (Basel III), but banks want maximum accuracy
+    \item \textbf{Labor economics}: Minimum wage impact analysis requires valid marginal effects, not just predictions
+    \item \textbf{Public health}: Intervention policies are based on causal relationships, not black-box correlations
+\end{enumerate}
+
+\subsection{Problem}
+
+Research in knowledge distillation ignores specific requirements of economics:
+
+\begin{enumerate}
+    \item \textbf{Loss of economic interpretation}: Traditional distillation optimizes only accuracy---student model coefficients may violate economic theory
+    \item \textbf{Coefficient instability}: Distilled models do not guarantee the stability necessary for statistical inference (bootstrap, cross-validation)
+    \item \textbf{Constraint violations}: Student models may exhibit counterintuitive relationships (e.g., income $\uparrow$ $\rightarrow$ default $\uparrow$)
+    \item \textbf{Absence of causal validation}: Existing frameworks do not verify whether distillation preserves causal structures
+    \item \textbf{Structural break detection}: Changes in economic relationships (e.g., 2008 crisis) are not identified or interpreted
+\end{enumerate}
+
+\subsection{Our Solution}
+
+We present an \textbf{econometric knowledge distillation} framework that:
+
+\begin{itemize}
+    \item \textbf{Preserves economic intuition}: Distillation to GAM/Linear maintaining interpretable coefficients and marginal effects
+    \item \textbf{Guarantees economic constraints}: Monotonicity constraints, sign consistency, and theoretical conformity during distillation
+    \item \textbf{Validates stability}: Bootstrap resampling demonstrates that coefficients are stable ($CV < 0.15$)
+    \item \textbf{Detects structural breaks}: Identifies changes in economic relationships and maintains interpretability
+    \item \textbf{Supports causal inference}: Framework compatible with instrumental variables, diff-in-diff
+\end{itemize}
+
+\subsection{Contributions}
+
+\begin{enumerate}
+    \item \textbf{Econometric distillation framework}: First methodology that combines knowledge distillation with econometric rigor
+    \item \textbf{Preservation of economic constraints}: Distillation techniques with constraints (monotonicity, signs, marginal effects)
+    \item \textbf{Coefficient stability analysis}: Bootstrap methodology demonstrating reliability for policy analysis
+    \item \textbf{Structural break detection}: Automated identification of changes in economic relationships
+    \item \textbf{Empirical validation}: Case studies in credit, labor, and health demonstrating practical applicability
+    \item \textbf{Practical implementation}: Framework integrated into DeepBridge for production use
+\end{enumerate}
+
+\subsection{Main Results}
+
+Validation across three economic domains demonstrates:
+
+\begin{itemize}
+    \item \textbf{Accuracy-interpretability trade-off}: 2-5\% accuracy loss vs. complex teacher model
+    \item \textbf{Coefficient stability}: $CV < 0.15$ for main coefficients under bootstrap (10,000 samples)
+    \item \textbf{Economic conformity}: 95\%+ of sign and monotonicity constraints preserved
+    \item \textbf{Break detection}: Precise identification of structural changes pre/post-2008 in credit
+    \item \textbf{Comparison with baselines}: Superiority vs. direct linear regression (without distillation) in accuracy (+8-12\%)
+\end{itemize}
+
+\subsection{Expected Impact}
+
+\subsubsection{For Economists}
+- Models with accuracy close to state-of-the-art ML, but with interpretability of classical econometrics
+- Stable coefficients allowing rigorous statistical inference
+- Automated validation of conformity with economic theory
+
+\subsubsection{For Policy Makers}
+- Interpretable quantitative evidence for public policy decisions
+- Total transparency (auditability by non-specialists)
+- Reliable analysis of marginal effects and elasticities
+
+\subsubsection{For Financial Industry}
+- Regulatory compliance (interpretable coefficients for Basel III, IFRS 9)
+- Predictive power superior to traditional linear models
+- Ability to explain credit decisions to regulators
+
+\subsection{Organization}
+
+Section 2 presents the foundation in econometrics and knowledge distillation. Section 3 describes the design of the econometric distillation framework. Section 4 details implementation in DeepBridge. Section 5 presents case studies in credit, labor, and health. Section 6 discusses limitations and theoretical implications. Section 7 concludes with future directions.

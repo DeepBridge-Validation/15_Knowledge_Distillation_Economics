@@ -1,0 +1,79 @@
+\documentclass[sigconf,nonacm]{acmart}
+
+% Essential packages
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{tabularx}
+\usepackage{ragged2e}
+
+% Python listings configuration
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    commentstyle=\color{gray},
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+% Check/cross symbols
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}
+
+% Document information
+\title{Knowledge Distillation for Economics: Trading Complexity for Interpretability in Econometric Models}
+
+\author{Gustavo Coelho Haase}
+\email{gustavohaase@gmail.com}
+\affiliation{%
+  \institution{Banco do Brasil S.A}
+  \city{Brasilia}
+  \country{Brazil}
+}
+
+\author{Paulo Henrique Dourado da Silva}
+\email{paulodourado.unb@gmail.com}
+\affiliation{%
+  \institution{Banco do Brasil S.A}
+  \city{Brasilia}
+  \country{Brazil}
+}
+
+% Abstract
+\begin{abstract}
+Economists and policymakers face a fundamental dilemma: complex machine learning models (ensembles, neural networks) achieve high predictive accuracy but lack the economic interpretability essential for policy analysis, while traditional econometric models (linear regression, logit) are interpretable but limited in predictive power. We present an \textbf{econometric knowledge distillation} framework that transfers knowledge from complex models (teacher) to interpretable models (student GAM/Linear), simultaneously preserving: (1) \textbf{economic intuition} (coefficients, marginal effects), (2) \textbf{economic constraints} (monotonicity, sign consistency), and (3) \textbf{coefficient stability} (valid statistical inference). Our DeepBridge implementation enables distilling XGBoost/Neural Networks to GAMs/Linear with \textbf{only 2-5\% accuracy loss}, while producing stable coefficients under bootstrap (CV $<$ 0.15), preserving economic relationships (income $\uparrow$ $\rightarrow$ default $\downarrow$), and enabling valid causal analysis. Validation across three economic domains (credit risk, labor economics, health economics) demonstrates: (1) distilled model coefficients converge with economic theory, (2) marginal effects are monotonic and interpretable, (3) \textbf{structural breaks} (pre/post-2008) are detected and economically interpreted. The framework fills a critical gap between high-performance ML and econometric rigor.
+\end{abstract}
+
+% Keywords
+\keywords{Knowledge Distillation, Econometrics, Interpretability, GAM, Economic Theory, Policy Analysis}
+
+\begin{document}
+
+\maketitle
+
+% Sections
+\input{sections/01_introduction}
+\input{sections/02_background}
+\input{sections/03_design}
+\input{sections/04_implementation}
+\input{sections/05_evaluation}
+\input{sections/06_discussion}
+\input{sections/07_conclusion}
+
+% Bibliography
+\bibliographystyle{plain}
+\bibliography{bibliography/references}
+
+\end{document}

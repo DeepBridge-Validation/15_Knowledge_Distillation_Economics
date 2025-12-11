@@ -1,89 +1,52 @@
-# Paper - English Version
+# Knowledge Distillation for Economics (English Version)
 
-**Title**: Knowledge Distillation for Economics: Trading Complexity for Interpretability in Econometric Models
+This is the English version of the paper "Knowledge Distillation for Economics: Trading Complexity for Interpretability in Econometric Models".
 
-**Título (Português)**: Destilação de Conhecimento para Economia: Negociando Complexidade por Interpretabilidade em Modelos Econométricos
+## Authors
+- Gustavo Coelho Haase (Banco do Brasil S.A)
+- Paulo Henrique Dourado da Silva (Banco do Brasil S.A)
 
----
+## Abstract
 
-## 📋 Status
+Economists and policymakers face a fundamental dilemma: complex machine learning models achieve high predictive accuracy but lack the economic interpretability essential for policy analysis, while traditional econometric models are interpretable but limited in predictive power. We present an econometric knowledge distillation framework that transfers knowledge from complex models to interpretable models, simultaneously preserving economic intuition, economic constraints, and coefficient stability.
 
-**Current Status**: 🚧 **In Development**
+## Compilation
 
-The English version of the paper is currently being prepared for submission to international venues.
+To compile the paper, run:
 
----
+```bash
+./compile.sh
+```
 
-## 🎯 Target Venues
+Or manually:
 
-- **Journal of Econometrics** (primary target)
-- **NeurIPS** - Economics and Computation Track
-- **Review of Economic Studies**
-- **American Economic Review** (if results are exceptional)
+```bash
+pdflatex main.tex
+bibtex main
+pdflatex main.tex
+pdflatex main.tex
+```
 
----
+## Structure
 
-## 📄 Planned Structure
+- `main.tex` - Main document file
+- `sections/` - Individual section files
+  - `01_introduction.tex` - Introduction and motivation
+  - `02_background.tex` - Related work and theoretical foundations
+  - `03_design.tex` - Framework design
+  - `04_implementation.tex` - Implementation details
+  - `05_evaluation.tex` - Evaluation and case studies
+  - `06_discussion.tex` - Discussion and implications
+  - `07_conclusion.tex` - Conclusions and future work
+- `bibliography/references.bib` - Bibliography references
+- `acmart.cls` - ACM article class
 
-The English version will follow the same structure as the Portuguese version:
+## Requirements
 
-### Sections
+- LaTeX distribution (TeX Live, MiKTeX, etc.)
+- BibTeX
+- Required LaTeX packages: babel, inputenc, fontenc, graphicx, booktabs, amsmath, listings, xcolor, algorithm, algpseudocode, pifont
 
-1. **Introduction** - Motivation and contributions
-2. **Background and Related Work** - Literature review
-3. **Framework Design** - Architecture and components
-4. **Implementation** - Technical details
-5. **Evaluation** - Experiments and results
-6. **Discussion** - Findings and implications
-7. **Conclusion** - Summary and future work
+## Note
 
-### Files
-
-- `main.tex` - Main paper file
-- `main.pdf` - Compiled PDF
-- `sections/` - Individual sections (7 files)
-- `bibliography/` - References
-- `acmart.cls` - ACM LaTeX class
-- `compile.sh` - Compilation script
-
----
-
-## 🔄 Portuguese Version
-
-The Portuguese version (original) is available in `paper/portuguese/` and is complete.
-
----
-
-## 🚀 Timeline
-
-- **Phase 1**: Translation of all sections
-- **Phase 2**: Adaptation for international audience
-- **Phase 3**: Review and polishing
-- **Phase 4**: Submission preparation
-
----
-
-## 📝 How to Contribute
-
-If you'd like to help with the English translation:
-
-1. Check the Portuguese version in `paper/portuguese/`
-2. Contact the maintainers
-3. Follow the contribution guidelines in `CONTRIBUTING.md`
-
----
-
-## 📊 Key Information
-
-- **Target Length**: ~10 pages
-- **Format**: ACM format (acmart.cls)
-- **Language**: English
-- **Status**: Planned for Q1 2026
-
----
-
-**For now, please refer to the Portuguese version in `paper/portuguese/`**
-
----
-
-**Last updated**: 2025-12-10
+This is a translation from the original Portuguese version located in `../portuguese/`.
