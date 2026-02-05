@@ -16,18 +16,20 @@ Paper Section: 5.3 - Case Study 2: Labor Economics
 Focus: Marginal effects of education on income probability
 """
 
-import numpy as np
-import pandas as pd
-from sklearn.datasets import fetch_openml
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, LabelEncoder
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import roc_auc_score, f1_score, accuracy_score
-from scipy import stats
 import json
 import pickle
 import warnings
+
+import numpy as np
+import pandas as pd
+from scipy import stats
+from sklearn.datasets import fetch_openml
+from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, f1_score, roc_auc_score
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+
 warnings.filterwarnings('ignore')
 
 RANDOM_STATE = 42

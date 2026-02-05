@@ -13,8 +13,8 @@ Exit codes:
     1 - Some dependencies missing or outdated
 """
 
-import sys
 import importlib
+import sys
 from typing import Dict, Tuple
 
 # ANSI color codes for terminal output

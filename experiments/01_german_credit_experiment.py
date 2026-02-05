@@ -17,21 +17,26 @@ Paper Section: 5.2 - Case Study 1: Credit Risk
 Target Venues: Journal of Econometrics, NeurIPS Economics Track
 """
 
-import numpy as np
-import pandas as pd
-from sklearn.datasets import fetch_openml
-from sklearn.model_selection import train_test_split, cross_val_score
-from sklearn.preprocessing import StandardScaler, LabelEncoder
-from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import (
-    roc_auc_score, f1_score, accuracy_score,
-    classification_report, confusion_matrix
-)
-from scipy import stats
 import json
 import pickle
 import warnings
+
+import numpy as np
+import pandas as pd
+from scipy import stats
+from sklearn.datasets import fetch_openml
+from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import (
+    accuracy_score,
+    classification_report,
+    confusion_matrix,
+    f1_score,
+    roc_auc_score,
+)
+from sklearn.model_selection import cross_val_score, train_test_split
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+
 warnings.filterwarnings('ignore')
 
 RANDOM_STATE = 42
